@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+
+    <!-- ========================================================================= -->
+    <!-- 🔴 1. ADIM: GOOGLE E-TABLO CSV LİNKİNİZİ AŞAĞIDAKİ ALANA YAPIŞTIRIN: -->
+    <!-- ========================================================================= -->
+    <script>
+        https://docs.google.com/spreadsheets/d/e/2PACX-1vQHR18JHvCFYZF1yWinW1iilYM4kngTgFqb8enAuEf_PBwFflPGxwT2scB54fnFxfg3OgVcQC8HB9LS/pub?output=csv;
+    </script>
+    <!-- ========================================================================= -->
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>ARSLANOĞLU GROUP - Mobil Not Sistemi</title>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Arslanoğlu Not">
+    <meta name="theme-color" content="#121212">
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+            user-select: none;
+        }
+
+        body {
+            background-color: #121212;
+            color: #ecf0f1;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        /* 1. GİRİŞ EKRANI */
+        #loginScreen {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-color: #121212;
+            z-index: 2000;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 30px;
+        }
+
+        .login-box {
+            text-align: center;
+            width: 100%;
+            max-width: 340px;
+            margin: 0 auto;
+        }
+
+        .login-logo { font-size: 55px; margin-bottom: 10px; }
+        .login-title { color: #d4af37; font-size: 20px; font-weight: 900; letter-spacing: 2px; margin-bottom: 4px; }
+        .login-subtitle { color: #888; font-size: 11px; font-weight: 600; letter-spacing: 1px; margin-bottom: 25px; }
+
+        .login-input {
+            width: 100%;
+            background: #1e1e1e;
+            border: 1px solid #333;
+            color: #f1c40f;
+            padding: 14px;
+            border-radius: 8px;
+            font-size: 14px;
+            margin-bottom: 12px;
+            outline: none;
+            user-select: text;
+        }
+        .login-input:focus { border-color: #d4af37; }
+
+        .login-btn {
+            width: 100%;
+            background: linear-gradient(135deg, #d4af37 0%, #aa7c11 100%);
+            color: #121212;
+            border: none;
+            padding: 15px;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: 900;
+            letter-spacing: 1px;
+            cursor: pointer;
+            margin-top: 8px;
+        }
+        .login-btn:active { opacity: 0.9; }
+
+        .login-status {
+            color: #e74c3c;
+            font-size: 12px;
+            margin-top: 15px;
+            font-weight: bold;
+            min-height: 18px;
+            line-height: 1.4;
+        }
+
+        .btn-bypass {
+            background: transparent;
+            color: #777;
+            border: none;
+            font-size: 11px;
+            margin-top: 18px;
+            cursor: pointer;
+            text-decoration: underline;
+        }
+
+        /* 2. NOT GİRİŞ MASASI */
+        .header {
+            background: linear-gradient(135deg, #1e1e1e 0%, #0d0d0d 100%);
+            border-bottom: 1px solid #2a2a2a;
+            padding: 12px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .brand { display: flex; align-items: center; gap: 10px; }
+        .brand-logo { font-size: 24px; }
+        .brand-title { font-size: 13px; font-weight: 900; color: #d4af37; letter-spacing: 1px; }
+        .brand-sub { font-size: 9px; color: #bdc3c7; }
+
+        .header-actions { display: flex; gap: 6px; }
+        .btn-header {
+            background: #26262a;
+            color: #d4af37;
+            border: 1px solid #444;
+            padding: 6px 10px;
+            border-radius: 15px;
+            font-size: 11px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .btn-logout { background: #c0392b; color: #fff; border: none; }
+
+        .progress-bar-container { height: 4px; background-color: #222; width: 100%; }
+        .progress-bar { height: 100%; background: linear-gradient(90deg, #d4af37, #f1c40f); width: 0%; transition: width 0.3s ease; }
+
+        .student-section { padding: 12px 16px 6px 16px; display: flex; flex-direction: column; gap: 4px; }
+        .student-counter { font-size: 11px; color: #888; font-weight: 600; display: flex; justify-content: space-between; }
+        .student-card { background: #1c1c1e; border: 1px solid #2c2c2e; border-radius: 12px; padding: 12px 14px; display: flex; justify-content: space-between; align-items: center; }
+        .student-info .no { font-size: 13px; color: #d4af37; font-weight: bold; }
+        .student-info .name { font-size: 16px; color: #fff; font-weight: 700; }
+        .student-total { text-align: right; }
+        .student-total .score { font-size: 26px; font-weight: 900; color: #2ecc71; }
+        .student-total .label { font-size: 9px; color: #777; text-transform: uppercase; }
+
+        .questions-scroll { display: flex; gap: 8px; padding: 8px 16px; overflow-x: auto; scrollbar-width: none; }
+        .questions-scroll::-webkit-scrollbar { display: none; }
+
+        .q-pill { background: #252528; border: 1px solid #333; border-radius: 10px; min-width: 60px; padding: 6px; display: flex; flex-direction: column; align-items: center; cursor: pointer; }
+        .q-pill.active { background: #d4af37; border-color: #f1c40f; transform: scale(1.05); }
+        .q-pill.active .q-title, .q-pill.active .q-val, .q-pill.active .q-max { color: #121212 !important; }
+        .q-pill .q-title { font-size: 11px; color: #aaa; font-weight: 600; }
+        .q-pill .q-val { font-size: 15px; font-weight: 800; color: #fff; margin: 2px 0; }
+        .q-pill .q-max { font-size: 9px; color: #666; }
+
+        .active-question-display { text-align: center; padding: 2px 0 8px 0; }
+        .active-question-display .title { font-size: 12px; color: #bbb; }
+        .active-question-display .val-preview { font-size: 34px; font-weight: 900; color: #d4af37; }
+
+        .keypad-container { margin-top: auto; background: #18181a; border-top: 1px solid #282828; padding: 8px 12px calc(15px + env(safe-area-inset-bottom)) 12px; }
+        .nav-controls { display: flex; gap: 8px; margin-bottom: 8px; }
+        .nav-btn { flex: 1; background: #2a2a2e; color: #fff; border: none; padding: 9px; border-radius: 8px; font-size: 12px; font-weight: bold; cursor: pointer; }
+
+        .keypad-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 7px; }
+        .key { background: #26262a; color: #fff; border: none; border-radius: 9px; height: 48px; font-size: 22px; font-weight: 700; display: flex; align-items: center; justify-content: center; cursor: pointer; }
+        .key:active { background: #d4af37; color: #121212; }
+        .key.btn-action { background: #34343a; font-size: 17px; }
+        .key.btn-enter { background: #27ae60; color: #fff; font-size: 13px; font-weight: 800; }
+
+        /* SENKRONİZASYON PENCERESİ */
+        .modal { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.85); padding: 25px; z-index: 3000; align-items: center; justify-content: center; }
+        .modal-content { background: #1c1c1e; border: 1px solid #333; border-radius: 16px; padding: 20px; width: 100%; max-width: 360px; text-align: center; }
+        .modal-content h3 { color: #d4af37; margin-bottom: 10px; font-size: 17px; }
+        .modal-content textarea { width: 100%; height: 110px; background: #111; border: 1px solid #444; color: #2ecc71; font-family: monospace; padding: 8px; font-size: 11px; border-radius: 6px; margin-bottom: 12px; }
+        .modal-btn { width: 100%; background: #d4af37; color: #121212; border: none; padding: 11px; border-radius: 8px; font-weight: bold; font-size: 13px; cursor: pointer; margin-bottom: 8px; }
+    </style>
+</head>
+<body>
+
+    <!-- 1. GİRİŞ EKRANI -->
+    <div id="loginScreen">
+        <div class="login-box">
+            <div class="login-logo">🦁</div>
+            <div class="login-title">ARSLANOĞLU GROUP</div>
+            <div class="login-subtitle">MOBİL ÖĞRETMEN GİRİŞİ</div>
+
+            <input type="text" id="loginUser" class="login-input" placeholder="Kullanıcı Adı..." autocapitalize="none">
+            <input type="password" id="loginPass" class="login-input" placeholder="Şifre...">
+
+            <button class="login-btn" id="btnSubmit" onclick="handleLogin()">GİRİŞ YAP ➔</button>
+            <div id="loginStatus" class="login-status"></div>
+
+            <button class="btn-bypass" onclick="loginSuccess('Yönetici (Çevrimdışı)')">⚡ Şifresiz Doğrudan Not Girişine Geç</button>
+        </div>
+    </div>
+
+    <!-- 2. NOT GİRİŞ MASASI -->
+    <div class="header">
+        <div class="brand">
+            <div class="brand-logo">🦁</div>
+            <div>
+                <div class="brand-title" id="teacherBadge">ÖĞRETMEN GİRİŞİ</div>
+                <div class="brand-sub">Ortak Sınav Not Masası</div>
+            </div>
+        </div>
+        <div class="header-actions">
+            <button class="btn-header" onclick="openSyncModal()">📲 Eşitle</button>
+            <button class="btn-header btn-logout" onclick="handleLogout()">Çıkış</button>
+        </div>
+    </div>
+
+    <div class="progress-bar-container">
+        <div class="progress-bar" id="progressBar"></div>
+    </div>
+
+    <div class="student-section">
+        <div class="student-counter">
+            <span id="studentIndexLabel">Öğrenci: 1 / 5</span>
+            <span id="percentCompleted">%0 Tamamlandı</span>
+        </div>
+        <div class="student-card">
+            <div class="student-info">
+                <div class="no" id="studentNo">No: 101</div>
+                <div class="name" id="studentName">Ali Yılmaz</div>
+            </div>
+            <div class="student-total">
+                <div class="score" id="studentTotalScore">0</div>
+                <div class="label">Toplam Puan</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="questions-scroll" id="questionsContainer"></div>
+
+    <div class="active-question-display">
+        <div class="title" id="activeQTitle">1. Soru Puanı (Maks: 10)</div>
+        <div class="val-preview" id="activeQValue">-</div>
+    </div>
+
+    <div class="keypad-container">
+        <div class="nav-controls">
+            <button class="nav-btn" onclick="prevStudent()">⬅ Önceki Öğrenci</button>
+            <button class="nav-btn" onclick="nextStudent()">Sonraki Öğrenci ➔</button>
+        </div>
+        <div class="keypad-grid">
+            <button class="key" onclick="pressNum('1')">1</button>
+            <button class="key" onclick="pressNum('2')">2</button>
+            <button class="key" onclick="pressNum('3')">3</button>
+            <button class="key" onclick="pressNum('4')">4</button>
+            <button class="key" onclick="pressNum('5')">5</button>
+            <button class="key" onclick="pressNum('6')">6</button>
+            <button class="key" onclick="pressNum('7')">7</button>
+            <button class="key" onclick="pressNum('8')">8</button>
+            <button class="key" onclick="pressNum('9')">9</button>
+            <button class="key btn-action" onclick="clearScore()">C</button>
+            <button class="key" onclick="pressNum('0')">0</button>
+            <button class="key btn-enter" onclick="confirmAndNext()">GEÇ ➔</button>
+        </div>
+    </div>
+
+    <!-- SENKRONİZASYON PENCERESİ -->
+    <div class="modal" id="syncModal">
+        <div class="modal-content">
+            <h3>📲 Masaüstü Senkronizasyonu</h3>
+            <p style="font-size:11px; color:#aaa; margin-bottom:10px;">Masaüstü programına aktarmak için kodu kopyalayın:</p>
+            <textarea id="syncDataText" readonly></textarea>
+            <button class="modal-btn" onclick="copySyncData()">📋 Kodu Kopyala</button>
+            <button class="modal-btn" style="background:#333; color:#fff;" onclick="closeSyncModal()">Kapat</button>
+        </div>
+    </div>
+
+    <script>
+        // GÜVENLİK ENGELİNİ (CORS) AŞAN GİRİŞ MOTORU
+        async function handleLogin() {
+            const user = document.getElementById("loginUser").value.trim();
+            const pass = document.getElementById("loginPass").value.trim();
+            const statusEl = document.getElementById("loginStatus");
+            const btnEl = document.getElementById("btnSubmit");
+
+            if (!user || !pass) {
+                statusEl.innerText = "Kullanıcı adı ve şifre yazınız!";
+                return;
+            }
+
+            statusEl.style.color = "#f1c40f";
+            statusEl.innerText = "Doğrulanıyor... ⏳";
+            btnEl.disabled = true;
+
+            // 1. Çevrimdışı / Test Girişi
+            if (user.toLowerCase() === "arslanoglu" && pass === "123456") {
+                loginSuccess("Yönetici");
+                return;
+            }
+
+            // 2. Google E-Tablo Kontrolü
+            if (!GOOGLE_TABLO_CSV_LINKI || GOOGLE_TABLO_CSV_LINKI.includes("BURAYA_GOOGLE")) {
+                statusEl.style.color = "#e74c3c";
+                statusEl.innerText = "E-Tablo linki girilmemiş. Test için: arslanoglu / 123456";
+                btnEl.disabled = false;
+                return;
+            }
+
+            try {
+                // Güvenlik duvarını aşan proxy köprüsü
+                const proxyUrl = "https://api.allorigins.win/raw?url=" + encodeURIComponent(GOOGLE_TABLO_CSV_LINKI);
+                const response = await fetch(proxyUrl, { cache: "no-store" });
+                
+                if (!response.ok) throw new Error("Ağ yanıt vermedi");
+                
+                const csvData = await response.text();
+                const lines = csvData.trim().split("\n");
+                
+                if (lines.length < 2) throw new Error("Tablo boş");
+
+                const headers = lines[0].split(",").map(h => h.trim().toLowerCase().replace(/"/g, "").replace(/\r/g, ""));
+
+                let onay = false;
+                let ogretmenAdi = user;
+
+                for (let i = 1; i < lines.length; i++) {
+                    const row = lines[i].split(",").map(c => c.trim().replace(/"/g, "").replace(/\r/g, ""));
+                    let rowData = {};
+                    headers.forEach((h, idx) => rowData[h] = row[idx]);
+
+                    const uTablo = rowData["kullanici_adi"] || rowData["kullanici adi"] || "";
+                    const pTablo = rowData["sifre"] || "";
+                    const durum = rowData["durum"] || "Aktif";
+
+                    if (uTablo.toLowerCase() === user.toLowerCase() && pTablo === pass) {
+                        if (durum.toLowerCase() === "aktif") {
+                            onay = true;
+                            ogretmenAdi = rowData["ad_soyad"] || rowData["ad soyad"] || user;
+                            break;
+                        } else {
+                            statusEl.style.color = "#e74c3c";
+                            statusEl.innerText = "Üyeliğiniz pasif durumdadır!";
+                            btnEl.disabled = false;
+                            return;
+                        }
+                    }
+                }
+
+                if (onay) {
+                    loginSuccess(ogretmenAdi);
+                } else {
+                    statusEl.style.color = "#e74c3c";
+                    statusEl.innerText = "Kullanıcı adı veya şifre hatalı!";
+                    btnEl.disabled = false;
+                }
+
+            } catch (err) {
+                statusEl.style.color = "#e67e22";
+                statusEl.innerHTML = "Google E-Tabloya bağlanılamadı.<br>Alttaki 'Şifresiz Doğrudan Geç' butonunu kullanabilirsiniz.";
+                btnEl.disabled = false;
+            }
+        }
+
+        function loginSuccess(teacherName) {
+            localStorage.setItem("arslanoglu_user_session", teacherName);
+            document.getElementById("teacherBadge").innerText = teacherName.toUpperCase();
+            document.getElementById("loginScreen").style.display = "none";
+            renderUI();
+        }
+
+        function handleLogout() {
+            if (confirm("Oturumu kapatmak istediğinize emin misiniz?")) {
+                localStorage.removeItem("arslanoglu_user_session");
+                document.getElementById("loginUser").value = "";
+                document.getElementById("loginPass").value = "";
+                document.getElementById("loginStatus").innerText = "";
+                document.getElementById("btnSubmit").disabled = false;
+                document.getElementById("loginScreen").style.display = "flex";
+            }
+        }
+
+        window.addEventListener("DOMContentLoaded", () => {
+            const savedSession = localStorage.getItem("arslanoglu_user_session");
+            if (savedSession) {
+                loginSuccess(savedSession);
+            }
+        });
+
+        // NOT GİRİŞ MASASI MOTORU
+        let examConfig = {
+            questions: [
+                { no: 1, max: 10 }, { no: 2, max: 10 }, { no: 3, max: 15 },
+                { no: 4, max: 15 }, { no: 5, max: 10 }, { no: 6, max: 10 },
+                { no: 7, max: 15 }, { no: 8, max: 15 }
+            ],
+            students: [
+                { no: "101", name: "Ali Yılmaz", scores: [0,0,0,0,0,0,0,0] },
+                { no: "102", name: "Ayşe Kaya", scores: [0,0,0,0,0,0,0,0] },
+                { no: "103", name: "Mehmet Demir", scores: [0,0,0,0,0,0,0,0] },
+                { no: "104", name: "Zeynep Çelik", scores: [0,0,0,0,0,0,0,0] },
+                { no: "105", name: "Burak Şahin", scores: [0,0,0,0,0,0,0,0] }
+            ]
+        };
+
+        if (localStorage.getItem("arslanoglu_mobile_exam")) {
+            try { examConfig = JSON.parse(localStorage.getItem("arslanoglu_mobile_exam")); } catch(e) {}
+        }
+
+        let currentStudentIdx = 0;
+        let currentQuestionIdx = 0;
+        let inputBuffer = "";
+
+        function saveToStorage() {
+            localStorage.setItem("arslanoglu_mobile_exam", JSON.stringify(examConfig));
+        }
+
+        function renderUI() {
+            const student = examConfig.students[currentStudentIdx];
+            document.getElementById("studentNo").innerText = "No: " + student.no;
+            document.getElementById("studentName").innerText = student.name;
+            document.getElementById("studentIndexLabel").innerText = `Öğrenci: ${currentStudentIdx + 1} / ${examConfig.students.length}`;
+
+            const total = student.scores.reduce((a, b) => a + b, 0);
+            document.getElementById("studentTotalScore").innerText = total;
+
+            const qContainer = document.getElementById("questionsContainer");
+            qContainer.innerHTML = "";
+            examConfig.questions.forEach((q, idx) => {
+                const pill = document.createElement("div");
+                pill.className = `q-pill ${idx === currentQuestionIdx ? 'active' : ''}`;
+                pill.onclick = () => selectQuestion(idx);
+                pill.innerHTML = `
+                    <div class="q-title">S${q.no}</div>
+                    <div class="q-val">${student.scores[idx] !== undefined ? student.scores[idx] : 0}</div>
+                    <div class="q-max">/${q.max}p</div>
+                `;
+                qContainer.appendChild(pill);
+            });
+
+            const activeQ = examConfig.questions[currentQuestionIdx];
+            document.getElementById("activeQTitle").innerText = `${activeQ.no}. Soru Puanı (Maks: ${activeQ.max}p)`;
+            const currentVal = inputBuffer !== "" ? inputBuffer : student.scores[currentQuestionIdx];
+            document.getElementById("activeQValue").innerText = currentVal;
+
+            const totalGraded = examConfig.students.filter(s => s.scores.some(sc => sc > 0)).length;
+            const pct = Math.round((totalGraded / examConfig.students.length) * 100);
+            document.getElementById("progressBar").style.width = pct + "%";
+            document.getElementById("percentCompleted").innerText = `%${pct} Tamamlandı`;
+        }
+
+        function selectQuestion(idx) {
+            currentQuestionIdx = idx;
+            inputBuffer = "";
+            renderUI();
+        }
+
+        function pressNum(num) {
+            const maxScore = examConfig.questions[currentQuestionIdx].max;
+            inputBuffer += num;
+
+            let val = parseInt(inputBuffer);
+            if (val > maxScore) {
+                val = maxScore;
+                inputBuffer = String(val);
+            }
+
+            examConfig.students[currentStudentIdx].scores[currentQuestionIdx] = val;
+            saveToStorage();
+
+            if (inputBuffer.length >= 2 || val === maxScore || (maxScore < 10 && inputBuffer.length >= 1)) {
+                setTimeout(() => { confirmAndNext(); }, 120);
+            } else {
+                renderUI();
+            }
+        }
+
+        function clearScore() {
+            inputBuffer = "0";
+            examConfig.students[currentStudentIdx].scores[currentQuestionIdx] = 0;
+            saveToStorage();
+            renderUI();
+            inputBuffer = "";
+        }
+
+        function confirmAndNext() {
+            inputBuffer = "";
+            if (currentQuestionIdx < examConfig.questions.length - 1) {
+                currentQuestionIdx++;
+            } else {
+                if (currentStudentIdx < examConfig.students.length - 1) {
+                    currentStudentIdx++;
+                    currentQuestionIdx = 0;
+                } else {
+                    alert("🎉 Tebrikler! Tüm sınıfın not girişi tamamlandı.");
+                }
+            }
+            renderUI();
+        }
+
+        function prevStudent() {
+            if (currentStudentIdx > 0) {
+                currentStudentIdx--;
+                currentQuestionIdx = 0;
+                inputBuffer = "";
+                renderUI();
+            }
+        }
+
+        function nextStudent() {
+            if (currentStudentIdx < examConfig.students.length - 1) {
+                currentStudentIdx++;
+                currentQuestionIdx = 0;
+                inputBuffer = "";
+                renderUI();
+            }
+        }
+
+        function openSyncModal() {
+            document.getElementById("syncDataText").value = JSON.stringify(examConfig);
+            document.getElementById("syncModal").style.display = "flex";
+        }
+
+        function closeSyncModal() {
+            document.getElementById("syncModal").style.display = "none";
+        }
+
+        function copySyncData() {
+            const text = document.getElementById("syncDataText");
+            text.select();
+            navigator.clipboard.writeText(text.value);
+            alert("📋 Not verileri kopyalandı! Masaüstü programına yapıştırabilirsiniz.");
+        }
+    </script>
+</body>
+</html>
