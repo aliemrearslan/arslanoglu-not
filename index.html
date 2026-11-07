@@ -4,10 +4,10 @@
     <meta charset="UTF-8">
 
     <!-- ========================================================================= -->
-    <!-- 🔴 1. ADIM: GOOGLE E-TABLO CSV LİNKİNİZİ AŞAĞIDAKİ ALANA YAPIŞTIRIN: -->
+    <!-- 🔴 ARSLANOĞLU GROUP GOOGLE E-TABLO VERİ KÖPRÜSÜ (GÖMÜLÜ) -->
     <!-- ========================================================================= -->
     <script>
-        https://docs.google.com/spreadsheets/d/e/2PACX-1vQHR18JHvCFYZF1yWinW1iilYM4kngTgFqb8enAuEf_PBwFflPGxwT2scB54fnFxfg3OgVcQC8HB9LS/pub?output=csv;
+        const GOOGLE_TABLO_CSV_LINKI = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQHR18JHvCFYZF1yWinW1iilYM4kngTgFqb8enAuEf_PBwFflPGxwT2scB54fnFxfg3OgVcQC8HB9LS/pub?output=csv";
     </script>
     <!-- ========================================================================= -->
 
@@ -87,7 +87,6 @@
             cursor: pointer;
             margin-top: 8px;
         }
-        .login-btn:active { opacity: 0.9; }
 
         .login-status {
             color: #e74c3c;
@@ -112,72 +111,152 @@
         .header {
             background: linear-gradient(135deg, #1e1e1e 0%, #0d0d0d 100%);
             border-bottom: 1px solid #2a2a2a;
-            padding: 12px 16px;
+            padding: 10px 14px;
             display: flex;
             align-items: center;
             justify-content: space-between;
         }
 
-        .brand { display: flex; align-items: center; gap: 10px; }
-        .brand-logo { font-size: 24px; }
-        .brand-title { font-size: 13px; font-weight: 900; color: #d4af37; letter-spacing: 1px; }
-        .brand-sub { font-size: 9px; color: #bdc3c7; }
+        .brand { display: flex; align-items: center; gap: 8px; }
+        .brand-logo { font-size: 22px; }
+        .brand-title { font-size: 12px; font-weight: 900; color: #d4af37; letter-spacing: 1px; }
+        .brand-sub { font-size: 8.5px; color: #bdc3c7; }
 
-        .header-actions { display: flex; gap: 6px; }
+        .header-actions { display: flex; gap: 5px; }
         .btn-header {
             background: #26262a;
             color: #d4af37;
             border: 1px solid #444;
-            padding: 6px 10px;
-            border-radius: 15px;
-            font-size: 11px;
+            padding: 6px 9px;
+            border-radius: 12px;
+            font-size: 10.5px;
             font-weight: bold;
             cursor: pointer;
         }
+        .btn-list { background: #27ae60; color: #fff; border: none; }
+        .btn-sync { background: #d4af37; color: #121212; border: none; }
         .btn-logout { background: #c0392b; color: #fff; border: none; }
 
-        .progress-bar-container { height: 4px; background-color: #222; width: 100%; }
-        .progress-bar { height: 100%; background: linear-gradient(90deg, #d4af37, #f1c40f); width: 0%; transition: width 0.3s ease; }
+        .progress-bar-container { height: 3px; background-color: #222; width: 100%; }
+        .progress-bar { height: 100%; background: linear-gradient(90deg, #d4af37, #2ecc71); width: 0%; transition: width 0.3s ease; }
 
-        .student-section { padding: 12px 16px 6px 16px; display: flex; flex-direction: column; gap: 4px; }
-        .student-counter { font-size: 11px; color: #888; font-weight: 600; display: flex; justify-content: space-between; }
-        .student-card { background: #1c1c1e; border: 1px solid #2c2c2e; border-radius: 12px; padding: 12px 14px; display: flex; justify-content: space-between; align-items: center; }
-        .student-info .no { font-size: 13px; color: #d4af37; font-weight: bold; }
-        .student-info .name { font-size: 16px; color: #fff; font-weight: 700; }
+        /* ARAMA VE ÖĞRENCİ KARTI */
+        .search-container {
+            padding: 8px 14px 2px 14px;
+        }
+
+        .search-input {
+            width: 100%;
+            background: #1c1c1e;
+            border: 1px solid #333;
+            color: #f1c40f;
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-size: 12.5px;
+            outline: none;
+            user-select: text;
+        }
+        .search-input:focus { border-color: #d4af37; }
+
+        .student-section { padding: 6px 14px 4px 14px; display: flex; flex-direction: column; gap: 4px; }
+        .student-counter { font-size: 10.5px; color: #888; font-weight: 600; display: flex; justify-content: space-between; }
+        
+        .student-card { 
+            background: #1c1c1e; 
+            border: 1px solid #2c2c2e; 
+            border-radius: 12px; 
+            padding: 10px 14px; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+        }
+        .student-info .no { font-size: 12px; color: #d4af37; font-weight: bold; }
+        .student-info .name { font-size: 15px; color: #fff; font-weight: 700; }
         .student-total { text-align: right; }
-        .student-total .score { font-size: 26px; font-weight: 900; color: #2ecc71; }
-        .student-total .label { font-size: 9px; color: #777; text-transform: uppercase; }
+        .student-total .score { font-size: 24px; font-weight: 900; color: #2ecc71; }
+        .student-total .label { font-size: 8.5px; color: #777; text-transform: uppercase; }
 
-        .questions-scroll { display: flex; gap: 8px; padding: 8px 16px; overflow-x: auto; scrollbar-width: none; }
+        .questions-scroll { display: flex; gap: 7px; padding: 6px 14px; overflow-x: auto; scrollbar-width: none; }
         .questions-scroll::-webkit-scrollbar { display: none; }
 
-        .q-pill { background: #252528; border: 1px solid #333; border-radius: 10px; min-width: 60px; padding: 6px; display: flex; flex-direction: column; align-items: center; cursor: pointer; }
-        .q-pill.active { background: #d4af37; border-color: #f1c40f; transform: scale(1.05); }
+        .q-pill { background: #252528; border: 1px solid #333; border-radius: 10px; min-width: 58px; padding: 5px; display: flex; flex-direction: column; align-items: center; cursor: pointer; }
+        .q-pill.active { background: #d4af37; border-color: #f1c40f; transform: scale(1.04); }
         .q-pill.active .q-title, .q-pill.active .q-val, .q-pill.active .q-max { color: #121212 !important; }
-        .q-pill .q-title { font-size: 11px; color: #aaa; font-weight: 600; }
-        .q-pill .q-val { font-size: 15px; font-weight: 800; color: #fff; margin: 2px 0; }
-        .q-pill .q-max { font-size: 9px; color: #666; }
+        .q-pill .q-title { font-size: 10.5px; color: #aaa; font-weight: 600; }
+        .q-pill .q-val { font-size: 14.5px; font-weight: 800; color: #fff; margin: 1px 0; }
+        .q-pill .q-max { font-size: 8.5px; color: #666; }
 
-        .active-question-display { text-align: center; padding: 2px 0 8px 0; }
-        .active-question-display .title { font-size: 12px; color: #bbb; }
-        .active-question-display .val-preview { font-size: 34px; font-weight: 900; color: #d4af37; }
+        .active-question-display { text-align: center; padding: 0 0 4px 0; }
+        .active-question-display .title { font-size: 11.5px; color: #bbb; }
+        .active-question-display .val-preview { font-size: 32px; font-weight: 900; color: #d4af37; }
 
-        .keypad-container { margin-top: auto; background: #18181a; border-top: 1px solid #282828; padding: 8px 12px calc(15px + env(safe-area-inset-bottom)) 12px; }
-        .nav-controls { display: flex; gap: 8px; margin-bottom: 8px; }
-        .nav-btn { flex: 1; background: #2a2a2e; color: #fff; border: none; padding: 9px; border-radius: 8px; font-size: 12px; font-weight: bold; cursor: pointer; }
+        .keypad-container { margin-top: auto; background: #18181a; border-top: 1px solid #282828; padding: 6px 10px calc(14px + env(safe-area-inset-bottom)) 10px; }
+        .nav-controls { display: flex; gap: 8px; margin-bottom: 6px; }
+        .nav-btn { flex: 1; background: #2a2a2e; color: #fff; border: none; padding: 8px; border-radius: 8px; font-size: 11.5px; font-weight: bold; cursor: pointer; }
 
-        .keypad-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 7px; }
-        .key { background: #26262a; color: #fff; border: none; border-radius: 9px; height: 48px; font-size: 22px; font-weight: 700; display: flex; align-items: center; justify-content: center; cursor: pointer; }
+        .keypad-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
+        .key { background: #26262a; color: #fff; border: none; border-radius: 9px; height: 46px; font-size: 21px; font-weight: 700; display: flex; align-items: center; justify-content: center; cursor: pointer; }
         .key:active { background: #d4af37; color: #121212; }
-        .key.btn-action { background: #34343a; font-size: 17px; }
-        .key.btn-enter { background: #27ae60; color: #fff; font-size: 13px; font-weight: 800; }
+        .key.btn-action { background: #34343a; font-size: 16px; }
+        .key.btn-enter { background: #27ae60; color: #fff; font-size: 12.5px; font-weight: 800; }
 
-        /* SENKRONİZASYON PENCERESİ */
-        .modal { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.85); padding: 25px; z-index: 3000; align-items: center; justify-content: center; }
-        .modal-content { background: #1c1c1e; border: 1px solid #333; border-radius: 16px; padding: 20px; width: 100%; max-width: 360px; text-align: center; }
-        .modal-content h3 { color: #d4af37; margin-bottom: 10px; font-size: 17px; }
-        .modal-content textarea { width: 100%; height: 110px; background: #111; border: 1px solid #444; color: #2ecc71; font-family: monospace; padding: 8px; font-size: 11px; border-radius: 6px; margin-bottom: 12px; }
-        .modal-btn { width: 100%; background: #d4af37; color: #121212; border: none; padding: 11px; border-radius: 8px; font-weight: bold; font-size: 13px; cursor: pointer; margin-bottom: 8px; }
+        /* MODALLAR (SINIF LİSTESİ & EŞİTLEME) */
+        .modal { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.88); padding: 18px; z-index: 3000; align-items: center; justify-content: center; }
+        .modal-content { background: #1c1c1e; border: 1px solid #333; border-radius: 16px; padding: 18px; width: 100%; max-width: 380px; max-height: 85vh; display: flex; flex-direction: column; }
+        .modal-content h3 { color: #d4af37; margin-bottom: 8px; font-size: 17px; text-align: center; }
+        
+        .student-list-scroll {
+            overflow-y: auto;
+            margin: 10px 0;
+            display: flex;
+            flex-direction: column;
+            gap: 7px;
+            padding-right: 4px;
+        }
+
+        .student-item {
+            background: #252528;
+            border: 1px solid #333;
+            border-radius: 8px;
+            padding: 9px 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+
+        /* NOTU GİRİLMİŞ ÖĞRENCİ: YEŞİL VURGU */
+        .student-item.graded {
+            background: #143522;
+            border: 1px solid #2ecc71;
+        }
+
+        .student-item.graded .st-name {
+            color: #2ecc71;
+            font-weight: bold;
+        }
+
+        .student-item.graded .st-badge {
+            background: #2ecc71;
+            color: #121212;
+            font-weight: 900;
+        }
+
+        .student-item .st-no { font-size: 11px; color: #aaa; }
+        .student-item .st-name { font-size: 13.5px; color: #fff; }
+        .student-item .st-badge {
+            background: #333;
+            color: #bbb;
+            font-size: 11px;
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-weight: bold;
+        }
+
+        .modal-btn { width: 100%; background: #d4af37; color: #121212; border: none; padding: 12px; border-radius: 8px; font-weight: 900; font-size: 13px; cursor: pointer; margin-top: 8px; }
+        .modal-code-display { background: #000; border: 1px dashed #d4af37; padding: 12px; border-radius: 8px; margin: 10px 0; display: none; text-align: center; }
+        .modal-code-display .code-val { font-size: 26px; font-weight: 900; color: #2ecc71; letter-spacing: 4px; }
     </style>
 </head>
 <body>
@@ -209,7 +288,8 @@
             </div>
         </div>
         <div class="header-actions">
-            <button class="btn-header" onclick="openSyncModal()">📲 Eşitle</button>
+            <button class="btn-header btn-list" onclick="openStudentListModal()">📋 Sınıf Listesi</button>
+            <button class="btn-header btn-sync" onclick="openSyncModal()">📲 Eşitle</button>
             <button class="btn-header btn-logout" onclick="handleLogout()">Çıkış</button>
         </div>
     </div>
@@ -218,6 +298,12 @@
         <div class="progress-bar" id="progressBar"></div>
     </div>
 
+    <!-- HIZLI ARAMA ÇUBUĞU (OKUL NO VEYA İSİM) -->
+    <div class="search-container">
+        <input type="search" id="quickSearchInput" class="search-input" placeholder="🔍 Okul No veya İsim ile Hızlı Bul (Örn: 105)..." oninput="handleQuickSearch(this.value)">
+    </div>
+
+    <!-- ÖĞRENCİ KARTI -->
     <div class="student-section">
         <div class="student-counter">
             <span id="studentIndexLabel">Öğrenci: 1 / 5</span>
@@ -244,8 +330,8 @@
 
     <div class="keypad-container">
         <div class="nav-controls">
-            <button class="nav-btn" onclick="prevStudent()">⬅ Önceki Öğrenci</button>
-            <button class="nav-btn" onclick="nextStudent()">Sonraki Öğrenci ➔</button>
+            <button class="nav-btn" onclick="prevStudent()">⬅ Önceki</button>
+            <button class="nav-btn" onclick="nextStudent()">Sonraki ➔</button>
         </div>
         <div class="keypad-grid">
             <button class="key" onclick="pressNum('1')">1</button>
@@ -263,19 +349,45 @@
         </div>
     </div>
 
-    <!-- SENKRONİZASYON PENCERESİ -->
+    <!-- 3. SINIF LİSTESİ MODAL (YEŞİL GÖSTERGELİ) -->
+    <div class="modal" id="studentListModal">
+        <div class="modal-content">
+            <h3>📋 Şube Öğrenci Listesi</h3>
+            <div style="font-size:11px; color:#aaa; text-align:center; margin-bottom:8px;">
+                <span style="color:#2ecc71; font-weight:bold;">✔ Yeşil:</span> Notu Girilenler | 
+                <span style="color:#888;">⏳ Gri:</span> Bekleyenler
+            </div>
+            
+            <input type="search" id="modalSearchInput" class="search-input" placeholder="🔍 Listede filtrele..." oninput="renderStudentListModal(this.value)">
+
+            <div class="student-list-scroll" id="modalStudentListContainer"></div>
+
+            <button class="modal-btn" style="background:#333; color:#fff;" onclick="closeStudentListModal()">Kapat</button>
+        </div>
+    </div>
+
+    <!-- 4. SENKRONİZASYON PENCERESİ -->
     <div class="modal" id="syncModal">
         <div class="modal-content">
-            <h3>📲 Masaüstü Senkronizasyonu</h3>
-            <p style="font-size:11px; color:#aaa; margin-bottom:10px;">Masaüstü programına aktarmak için kodu kopyalayın:</p>
-            <textarea id="syncDataText" readonly></textarea>
-            <button class="modal-btn" onclick="copySyncData()">📋 Kodu Kopyala</button>
+            <h3>📲 Masaüstüne Notları Gönder</h3>
+            <p style="font-size:11.5px; color:#bbb; text-align:center; margin-bottom:12px;">Notları bilgisayara aktarmak için aşağıdaki yollardan birini seçin:</p>
+            
+            <button class="modal-btn" style="background:#27ae60; color:#fff;" onclick="uploadToCloud()" id="btnCloudUpload">☁️ Buluta Yükle (6 Haneli Kod Al)</button>
+            
+            <div class="modal-code-display" id="codeDisplay">
+                <div style="font-size:10px; color:#aaa; margin-bottom:3px;">BİLGİSAYARA YAZILACAK EŞLEME KODU:</div>
+                <div class="code-val" id="syncCodeText">------</div>
+                <div style="font-size:10px; color:#2ecc71; margin-top:3px;">Bilgisayarda bu kodu yazıp "İndir"e basınız.</div>
+            </div>
+
+            <button class="modal-btn" style="background:#25D366; color:#fff;" onclick="shareViaWhatsApp()">💬 WhatsApp / Paylaş</button>
+            <button class="modal-btn" style="background:#2c3e50; color:#ecf0f1;" onclick="copySyncData()">📋 Paketi Panoya Kopyala</button>
             <button class="modal-btn" style="background:#333; color:#fff;" onclick="closeSyncModal()">Kapat</button>
         </div>
     </div>
 
     <script>
-        // GÜVENLİK ENGELİNİ (CORS) AŞAN GİRİŞ MOTORU
+        // GOOGLE E-TABLO CANLI DOĞRULAMA (CORS PROXY KÖPRÜLÜ)
         async function handleLogin() {
             const user = document.getElementById("loginUser").value.trim();
             const pass = document.getElementById("loginPass").value.trim();
@@ -291,32 +403,19 @@
             statusEl.innerText = "Doğrulanıyor... ⏳";
             btnEl.disabled = true;
 
-            // 1. Çevrimdışı / Test Girişi
+            // Yedek / Acil test girişi
             if (user.toLowerCase() === "arslanoglu" && pass === "123456") {
                 loginSuccess("Yönetici");
                 return;
             }
 
-            // 2. Google E-Tablo Kontrolü
-            if (!GOOGLE_TABLO_CSV_LINKI || GOOGLE_TABLO_CSV_LINKI.includes("BURAYA_GOOGLE")) {
-                statusEl.style.color = "#e74c3c";
-                statusEl.innerText = "E-Tablo linki girilmemiş. Test için: arslanoglu / 123456";
-                btnEl.disabled = false;
-                return;
-            }
-
             try {
-                // Güvenlik duvarını aşan proxy köprüsü
                 const proxyUrl = "https://api.allorigins.win/raw?url=" + encodeURIComponent(GOOGLE_TABLO_CSV_LINKI);
                 const response = await fetch(proxyUrl, { cache: "no-store" });
-                
                 if (!response.ok) throw new Error("Ağ yanıt vermedi");
                 
                 const csvData = await response.text();
                 const lines = csvData.trim().split("\n");
-                
-                if (lines.length < 2) throw new Error("Tablo boş");
-
                 const headers = lines[0].split(",").map(h => h.trim().toLowerCase().replace(/"/g, "").replace(/\r/g, ""));
 
                 let onay = false;
@@ -385,8 +484,9 @@
             }
         });
 
-        // NOT GİRİŞ MASASI MOTORU
+        // NOT GİRİŞ MASASI VERİSİ
         let examConfig = {
+            sube: "9-A",
             questions: [
                 { no: 1, max: 10 }, { no: 2, max: 10 }, { no: 3, max: 15 },
                 { no: 4, max: 15 }, { no: 5, max: 10 }, { no: 6, max: 10 },
@@ -411,6 +511,10 @@
 
         function saveToStorage() {
             localStorage.setItem("arslanoglu_mobile_exam", JSON.stringify(examConfig));
+        }
+
+        function isStudentGraded(student) {
+            return student.scores.some(sc => sc > 0);
         }
 
         function renderUI() {
@@ -441,10 +545,10 @@
             const currentVal = inputBuffer !== "" ? inputBuffer : student.scores[currentQuestionIdx];
             document.getElementById("activeQValue").innerText = currentVal;
 
-            const totalGraded = examConfig.students.filter(s => s.scores.some(sc => sc > 0)).length;
+            const totalGraded = examConfig.students.filter(s => isStudentGraded(s)).length;
             const pct = Math.round((totalGraded / examConfig.students.length) * 100);
             document.getElementById("progressBar").style.width = pct + "%";
-            document.getElementById("percentCompleted").innerText = `%${pct} Tamamlandı`;
+            document.getElementById("percentCompleted").innerText = `%${pct} Tamamlandı (${totalGraded}/${examConfig.students.length})`;
         }
 
         function selectQuestion(idx) {
@@ -514,8 +618,77 @@
             }
         }
 
+        // HIZLI ARAMA (OKUL NO VEYA İSİM İLE ANINDA ÖĞRENCİYE ATLAMA)
+        function handleQuickSearch(query) {
+            const q = query.trim().toLowerCase();
+            if (!q) return;
+
+            // Önce tam numara eşleşmesine bak
+            let foundIdx = examConfig.students.findIndex(s => s.no.toLowerCase() === q);
+            // Bulunamazsa isim içinde ara
+            if (foundIdx === -1) {
+                foundIdx = examConfig.students.findIndex(s => s.name.toLowerCase().includes(q) || s.no.includes(q));
+            }
+
+            if (foundIdx !== -1) {
+                currentStudentIdx = foundIdx;
+                currentQuestionIdx = 0;
+                inputBuffer = "";
+                renderUI();
+            }
+        }
+
+        // 3. SINIF LİSTESİ MODAL (YEŞİL GÖSTERGELİ)
+        function openStudentListModal() {
+            document.getElementById("modalSearchInput").value = "";
+            renderStudentListModal("");
+            document.getElementById("studentListModal").style.display = "flex";
+        }
+
+        function closeStudentListModal() {
+            document.getElementById("studentListModal").style.display = "none";
+        }
+
+        function renderStudentListModal(filterText) {
+            const container = document.getElementById("modalStudentListContainer");
+            container.innerHTML = "";
+            const q = filterText.trim().toLowerCase();
+
+            examConfig.students.forEach((st, idx) => {
+                if (q && !st.name.toLowerCase().includes(q) && !st.no.includes(q)) {
+                    return;
+                }
+
+                const total = st.scores.reduce((a, b) => a + b, 0);
+                const graded = isStudentGraded(st);
+
+                const item = document.createElement("div");
+                item.className = `student-item ${graded ? 'graded' : ''}`;
+                item.onclick = () => {
+                    currentStudentIdx = idx;
+                    currentQuestionIdx = 0;
+                    inputBuffer = "";
+                    renderUI();
+                    closeStudentListModal();
+                };
+
+                item.innerHTML = `
+                    <div>
+                        <div class="st-no">No: ${st.no}</div>
+                        <div class="st-name">${st.name}</div>
+                    </div>
+                    <div class="st-badge">${graded ? '✔ ' + total + ' Puan' : '⏳ Girilmedi'}</div>
+                `;
+
+                container.appendChild(item);
+            });
+        }
+
+        // 4. SENKRONİZASYON PENCERESİ
         function openSyncModal() {
-            document.getElementById("syncDataText").value = JSON.stringify(examConfig);
+            document.getElementById("codeDisplay").style.display = "none";
+            document.getElementById("btnCloudUpload").innerText = "☁️ Buluta Yükle (6 Haneli Kod Al)";
+            document.getElementById("btnCloudUpload").disabled = false;
             document.getElementById("syncModal").style.display = "flex";
         }
 
@@ -523,11 +696,50 @@
             document.getElementById("syncModal").style.display = "none";
         }
 
+        async function uploadToCloud() {
+            const btn = document.getElementById("btnCloudUpload");
+            btn.innerText = "Yükleniyor... ⏳";
+            btn.disabled = true;
+
+            try {
+                const response = await fetch("https://jsonblob.com/api/jsonBlob", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json", "Accept": "application/json" },
+                    body: JSON.stringify(examConfig)
+                });
+
+                if (response.ok) {
+                    const location = response.headers.get("Location") || "";
+                    const blobId = location.split("/").pop();
+                    const syncCode = blobId ? blobId.substring(0, 6).toUpperCase() : "OK100";
+                    localStorage.setItem("last_blob_id", blobId);
+
+                    document.getElementById("syncCodeText").innerText = syncCode;
+                    document.getElementById("codeDisplay").style.display = "block";
+                    btn.innerText = "✅ Buluta Başarıyla Yüklendi!";
+                } else {
+                    throw new Error();
+                }
+            } catch(e) {
+                alert("Bulut bağlantısı kurulamadı. Lütfen 'WhatsApp / Paylaş' butonunu kullanınız.");
+                btn.innerText = "☁️ Buluta Yükle (Tekrar Dene)";
+                btn.disabled = false;
+            }
+        }
+
+        function shareViaWhatsApp() {
+            const textData = JSON.stringify(examConfig);
+            if (navigator.share) {
+                navigator.share({ title: 'Arslanoğlu Sınav Notları', text: textData }).catch(() => {});
+            } else {
+                navigator.clipboard.writeText(textData);
+                alert("Not paketi kopyalandı! WhatsApp ile kendinize yapıştırabilirsiniz.");
+            }
+        }
+
         function copySyncData() {
-            const text = document.getElementById("syncDataText");
-            text.select();
-            navigator.clipboard.writeText(text.value);
-            alert("📋 Not verileri kopyalandı! Masaüstü programına yapıştırabilirsiniz.");
+            navigator.clipboard.writeText(JSON.stringify(examConfig));
+            alert("📋 Not paketi kopyalandı! Masaüstü programına yapıştırabilirsiniz.");
         }
     </script>
 </body>
