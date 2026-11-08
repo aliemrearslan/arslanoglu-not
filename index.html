@@ -2,9 +2,16 @@
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
+
+    <!-- ========================================================================= -->
+    <!-- 🔴 GOOGLE E-TABLO VERİ KÖPRÜSÜ (GÖMÜLÜ) -->
+    <!-- ========================================================================= -->
     <script>
         const GOOGLE_TABLO_CSV_LINKI = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQHR18JHvCFYZF1yWinW1iilYM4kngTgFqb8enAuEf_PBwFflPGxwT2scB54fnFxfg3OgVcQC8HB9LS/pub?output=csv";
     </script>
+    <!-- ========================================================================= -->
+
+    <!-- YAKINLAŞMAYI KİLİTLEYEN META -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>ARSLANOĞLU GROUP - Mobil Not Sistemi</title>
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -20,12 +27,12 @@
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             -webkit-tap-highlight-color: transparent;
             user-select: none;
-            touch-action: manipulation !important;
+            touch-action: manipulation !important; /* ÇİFT DOKUNMA YAKINLAŞTIRMASINI ÖNLER */
         }
 
         html, body {
             height: 100%;
-            height: 100dvh;
+            height: 100dvh; /* DİNAMİK VİEWPORT */
             background-color: #121212;
             color: #ecf0f1;
             display: flex;
@@ -33,6 +40,7 @@
             overflow: hidden;
         }
 
+        /* 1. GİRİŞ EKRANI */
         #loginScreen {
             position: fixed;
             top: 0; left: 0; right: 0; bottom: 0;
@@ -62,7 +70,7 @@
             color: #f1c40f;
             padding: 14px;
             border-radius: 8px;
-            font-size: 16px !important;
+            font-size: 16px !important; /* İPHONE ZOOM ENGELİ İÇİN 16PX */
             margin-bottom: 12px;
             outline: none;
             user-select: text;
@@ -101,6 +109,7 @@
             text-decoration: underline;
         }
 
+        /* 2. NOT GİRİŞ MASASI */
         .header {
             background: linear-gradient(135deg, #1e1e1e 0%, #0d0d0d 100%);
             border-bottom: 1px solid #2a2a2a;
@@ -126,49 +135,20 @@
             cursor: pointer;
         }
 
-        .header-actions { display: flex; gap: 4px; }
+        .header-actions { display: flex; gap: 5px; }
         .btn-header {
             background: #26262a;
             color: #d4af37;
             border: 1px solid #444;
-            padding: 5px 8px;
+            padding: 5px 9px;
             border-radius: 12px;
             font-size: 10px;
             font-weight: bold;
             cursor: pointer;
         }
-        .btn-download { background: #0969da; color: #fff; border: none; font-weight: 900; }
-        .btn-list { background: #238636; color: #fff; border: none; }
+        .btn-list { background: #27ae60; color: #fff; border: none; }
         .btn-sync { background: #d4af37; color: #121212; border: none; font-weight: 900; }
-        .btn-logout { background: #da3633; color: #fff; border: none; }
-
-        .component-bar {
-            display: none;
-            background: #18181a;
-            border-bottom: 1px solid #2a2a2a;
-            padding: 6px 12px;
-            gap: 6px;
-            justify-content: center;
-        }
-
-        .comp-btn {
-            flex: 1;
-            background: #252528;
-            color: #bbb;
-            border: 1px solid #333;
-            padding: 6px;
-            border-radius: 6px;
-            font-size: 11px;
-            font-weight: bold;
-            cursor: pointer;
-            text-align: center;
-        }
-
-        .comp-btn.active {
-            background: #d4af37;
-            color: #121212;
-            border-color: #f1c40f;
-        }
+        .btn-logout { background: #c0392b; color: #fff; border: none; }
 
         .progress-bar-container { height: 3px; background-color: #222; width: 100%; }
         .progress-bar { height: 100%; background: linear-gradient(90deg, #d4af37, #2ecc71); width: 0%; transition: width 0.3s ease; }
@@ -181,7 +161,7 @@
             color: #f1c40f;
             padding: 8px 12px;
             border-radius: 7px;
-            font-size: 16px !important;
+            font-size: 16px !important; /* İPHONE ZOOM ENGELİ İÇİN 16PX */
             outline: none;
             user-select: text;
         }
@@ -219,6 +199,7 @@
         .active-question-display .title { font-size: 11px; color: #bbb; }
         .active-question-display .val-preview { font-size: 28px; font-weight: 900; color: #d4af37; }
 
+        /* TUŞ TAKIMI */
         .keypad-container { 
             margin-top: auto; 
             background: #18181a; 
@@ -246,6 +227,7 @@
         .key.btn-action { background: #34343a; font-size: 15px; }
         .key.btn-enter { background: #27ae60; color: #fff; font-size: 12px; font-weight: 800; }
 
+        /* MODALLAR */
         .modal { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.88); padding: 18px; z-index: 3000; align-items: center; justify-content: center; }
         .modal-content { background: #1c1c1e; border: 1px solid #333; border-radius: 14px; padding: 16px; width: 100%; max-width: 360px; max-height: 85dvh; display: flex; flex-direction: column; }
         .modal-content h3 { color: #d4af37; margin-bottom: 8px; font-size: 16px; text-align: center; }
@@ -264,6 +246,7 @@
 </head>
 <body>
 
+    <!-- 1. GİRİŞ EKRANI -->
     <div id="loginScreen">
         <div class="login-box">
             <div class="login-logo">🦁</div>
@@ -280,6 +263,7 @@
         </div>
     </div>
 
+    <!-- 2. NOT GİRİŞ MASASI -->
     <div class="header">
         <div class="brand">
             <div class="brand-logo">🦁</div>
@@ -289,27 +273,22 @@
             </div>
         </div>
         <div class="header-actions">
-            <button class="btn-header btn-download" onclick="fetchSetupFromDesktop()">📥 İndir</button>
             <button class="btn-header btn-list" onclick="openStudentListModal()">📋 Liste</button>
             <button class="btn-header btn-sync" onclick="syncDirectToCloud()">☁️ Bulut</button>
             <button class="btn-header btn-logout" onclick="handleLogout()">Çıkış</button>
         </div>
     </div>
 
-    <div class="component-bar" id="componentBar">
-        <button class="comp-btn active" id="btnCompYazili" onclick="setComponent('yazili')">📝 Yazılı (%50)</button>
-        <button class="comp-btn" id="btnCompDinleme" onclick="setComponent('dinleme')">🎧 Dinleme (%25)</button>
-        <button class="comp-btn" id="btnCompKonusma" onclick="setComponent('konusma')">🗣️ Konuşma (%25)</button>
-    </div>
-
     <div class="progress-bar-container">
         <div class="progress-bar" id="progressBar"></div>
     </div>
 
+    <!-- HIZLI ARAMA -->
     <div class="search-container">
         <input type="search" id="quickSearchInput" class="search-input" placeholder="🔍 Okul No veya İsim ile Hızlı Bul..." oninput="handleQuickSearch(this.value)">
     </div>
 
+    <!-- ÖĞRENCİ KARTI -->
     <div class="student-section">
         <div class="student-counter">
             <span id="studentIndexLabel">Öğrenci: 1 / 5</span>
@@ -322,7 +301,7 @@
             </div>
             <div class="student-total">
                 <div class="score" id="studentTotalScore">0</div>
-                <div class="label" id="scoreLabel">Toplam Puan</div>
+                <div class="label">Toplam Puan</div>
             </div>
         </div>
     </div>
@@ -334,6 +313,7 @@
         <div class="val-preview" id="activeQValue">-</div>
     </div>
 
+    <!-- TUŞ TAKIMI -->
     <div class="keypad-container">
         <div class="nav-controls">
             <button class="nav-btn" onclick="prevStudent()">⬅ Önceki</button>
@@ -355,28 +335,27 @@
         </div>
     </div>
 
+    <!-- DERS & ŞUBE SEÇİM MODAL -->
     <div class="modal" id="courseModal">
         <div class="modal-content">
-            <h3>📐 Sınav & Şube Seçimi</h3>
-            <p style="font-size:11px; color:#aaa; margin-bottom:12px; text-align:center;">Ders ve şubenizi seçiniz:</p>
+            <h3>📐 Ders ve Sınav Ayarı</h3>
+            <p style="font-size:11px; color:#aaa; margin-bottom:12px; text-align:center;">Hangi dersin sınavını okuyorsanız belirtiniz:</p>
             
-            <label style="font-size:11px; color:#d4af37; font-weight:bold;">Ders:</label>
+            <label style="font-size:11px; color:#d4af37; font-weight:bold;">Ders Adı:</label>
             <input type="text" id="inpCourseName" class="login-input" style="padding:9px; margin-bottom:8px;" value="Matematik">
             
-            <label style="font-size:11px; color:#d4af37; font-weight:bold;">Şube:</label>
+            <label style="font-size:11px; color:#d4af37; font-weight:bold;">Şube Adı:</label>
             <input type="text" id="inpBranchName" class="login-input" style="padding:9px; margin-bottom:8px;" value="9-A">
 
-            <label style="font-size:11px; color:#d4af37; font-weight:bold;">Sınav Türü:</label>
-            <select id="selExamMode" class="login-input" style="padding:9px; margin-bottom:14px; background:#1e1e1e; color:#f1c40f;">
-                <option value="standart">Standart Sınav (Tek Yazılı)</option>
-                <option value="dil">Çok Bileşenli Dil Sınavı (4 Beceri)</option>
-            </select>
+            <label style="font-size:11px; color:#d4af37; font-weight:bold;">Sınav Dönemi:</label>
+            <input type="text" id="inpExamName" class="login-input" style="padding:9px; margin-bottom:14px;" value="1. Dönem 1. Yazılı">
 
-            <button class="modal-btn" onclick="saveCourseSettings()">Seçimi Onayla</button>
+            <button class="modal-btn" onclick="saveCourseSettings()">Kaydet ve Devam Et</button>
             <button class="modal-btn" style="background:#333; color:#fff;" onclick="closeCourseModal()">Kapat</button>
         </div>
     </div>
 
+    <!-- SINIF LİSTESİ MODAL -->
     <div class="modal" id="studentListModal">
         <div class="modal-content">
             <h3>📋 Şube Öğrenci Listesi</h3>
@@ -391,12 +370,24 @@
     </div>
 
     <script>
+        // 🔴 İOS & ANDROİD ÇİFT TIKLAMA YAKINLAŞTIRMASINI (ZOOM) KESİN ENGELLEYEN KOD
+        let lastTouchEnd = 0;
+        document.addEventListener('touchend', function (event) {
+            let now = (new Date()).getTime();
+            if (now - lastTouchEnd <= 300) {
+                event.preventDefault();
+            }
+            lastTouchEnd = now;
+        }, { passive: false });
+
+        document.addEventListener('gesturestart', function (e) {
+            e.preventDefault();
+        });
+
         let currentActiveUser = "arslanoglu";
         let currentCourse = "Matematik";
         let currentBranch = "9-A";
         let currentExam = "1. Dönem 1. Yazılı";
-        let currentExamMode = "standart";
-        let currentComponent = "yazili";
 
         async function handleLogin() {
             const user = document.getElementById("loginUser").value.trim();
@@ -404,7 +395,10 @@
             const statusEl = document.getElementById("loginStatus");
             const btnEl = document.getElementById("btnSubmit");
 
-            if (!user || !pass) { statusEl.innerText = "Kullanıcı adı ve şifre yazınız!"; return; }
+            if (!user || !pass) {
+                statusEl.innerText = "Kullanıcı adı ve şifre yazınız!";
+                return;
+            }
 
             statusEl.style.color = "#f1c40f";
             statusEl.innerText = "Doğrulanıyor... ⏳";
@@ -422,22 +416,27 @@
                 
                 const csvData = await response.text();
                 const lines = csvData.trim().split("\n");
-                const headers = lines[0].split(",").map(h => h.trim().toLowerCase().replace(/"/g, ""));
+                const headers = lines[0].split(",").map(h => h.trim().toLowerCase().replace(/"/g, "").replace(/\r/g, ""));
 
                 let onay = false;
                 let ogretmenAdi = user;
 
                 for (let i = 1; i < lines.length; i++) {
-                    const row = lines[i].split(",").map(c => c.trim().replace(/"/g, ""));
+                    const row = lines[i].split(",").map(c => c.trim().replace(/"/g, "").replace(/\r/g, ""));
                     let rowData = {};
                     headers.forEach((h, idx) => rowData[h] = row[idx]);
 
-                    if ((rowData["kullanici_adi"] || "").toLowerCase() === user.toLowerCase() && rowData["sifre"] === pass) {
-                        if ((rowData["durum"] || "Aktif").toLowerCase() === "aktif") {
+                    const uTablo = rowData["kullanici_adi"] || rowData["kullanici adi"] || "";
+                    const pTablo = rowData["sifre"] || "";
+                    const durum = rowData["durum"] || "Aktif";
+
+                    if (uTablo.toLowerCase() === user.toLowerCase() && pTablo === pass) {
+                        if (durum.toLowerCase() === "aktif") {
                             onay = true;
-                            ogretmenAdi = rowData["ad_soyad"] || user;
+                            ogretmenAdi = rowData["ad_soyad"] || rowData["ad soyad"] || user;
                             break;
                         } else {
+                            statusEl.style.color = "#e74c3c";
                             statusEl.innerText = "Üyeliğiniz pasif durumdadır!";
                             btnEl.disabled = false;
                             return;
@@ -448,10 +447,13 @@
                 if (onay) {
                     loginSuccess(ogretmenAdi, user);
                 } else {
+                    statusEl.style.color = "#e74c3c";
                     statusEl.innerText = "Kullanıcı adı veya şifre hatalı!";
                     btnEl.disabled = false;
                 }
+
             } catch (err) {
+                statusEl.style.color = "#e67e22";
                 statusEl.innerHTML = "Google E-Tabloya bağlanılamadı.<br>Alttaki 'Şifresiz Geç' butonunu kullanabilirsiniz.";
                 btnEl.disabled = false;
             }
@@ -464,7 +466,6 @@
             document.getElementById("teacherBadge").innerText = teacherName.toUpperCase();
             document.getElementById("loginScreen").style.display = "none";
             loadCourseData();
-            fetchSetupFromDesktop(true);
             renderUI();
         }
 
@@ -483,61 +484,15 @@
         window.addEventListener("DOMContentLoaded", () => {
             const savedSession = localStorage.getItem("arslanoglu_user_session");
             const savedRawUser = localStorage.getItem("arslanoglu_raw_user");
-            if (savedSession) loginSuccess(savedSession, savedRawUser || "arslanoglu");
-        });
-
-        async function fetchSetupFromDesktop(silent = false) {
-            const topic = "arslanoglu_setup_" + currentActiveUser;
-            try {
-                const res = await fetch(`https://ntfy.sh/${topic}/json?poll=1`, { cache: "no-store" });
-                if (!res.ok) return;
-                const txt = await res.text();
-                const lines = txt.trim().split("\n");
-                if (lines.length === 0 || lines[0] === "") return;
-
-                const lastMsg = JSON.parse(lines[lines.length - 1]);
-                const setupData = JSON.parse(lastMsg.message);
-
-                if (setupData.type === "setup" && setupData.subeler) {
-                    currentCourse = setupData.ders || "Ders";
-                    currentExamMode = setupData.mod || "standart";
-                    currentExam = setupData.sinav || "1. Yazılı";
-                    
-                    const subeAdlari = Object.keys(setupData.subeler);
-                    currentBranch = subeAdlari[0] || "9-A";
-
-                    examConfig = {
-                        ders: currentCourse,
-                        sube: currentBranch,
-                        sinav: currentExam,
-                        mod: currentExamMode,
-                        yuzdeler: setupData.yuzdeler || { yazili: 50, dinleme: 25, konusma: 25 },
-                        questions: setupData.questions || [{ no: 1, max: 10 }, { no: 2, max: 10 }],
-                        students: (setupData.subeler[currentBranch] || []).map(st => ({
-                            no: st.no,
-                            name: st.name,
-                            scores: Array((setupData.questions || []).length).fill(0),
-                            dinleme: 0,
-                            konusma: 0
-                        }))
-                    };
-
-                    saveToStorage();
-                    renderUI();
-
-                    if (!silent) {
-                        alert(`🎉 BİLGİSAYARDAN YENİ SINAV KURULUMU ALINDI!\n\n📚 Ders: ${currentCourse}\n🏫 Şube: ${currentBranch}\n📋 Sınav Türü: ${currentExamMode === 'dil' ? 'Çok Bileşenli Dil Sınavı' : 'Standart Yazılı'}\n\nÖğrenci listesi başarıyla güncellendi!`);
-                    }
-                }
-            } catch(e) {
-                if (!silent) alert("Masaüstünden henüz gönderilmiş bir sınav kurulumu bulunamadı.");
+            if (savedSession) {
+                loginSuccess(savedSession, savedRawUser || "arslanoglu");
             }
-        }
+        });
 
         function openCourseModal() {
             document.getElementById("inpCourseName").value = currentCourse;
             document.getElementById("inpBranchName").value = currentBranch;
-            document.getElementById("selExamMode").value = currentExamMode;
+            document.getElementById("inpExamName").value = currentExam;
             document.getElementById("courseModal").style.display = "flex";
         }
 
@@ -548,19 +503,11 @@
         function saveCourseSettings() {
             currentCourse = document.getElementById("inpCourseName").value.trim() || "Ders";
             currentBranch = document.getElementById("inpBranchName").value.trim().toUpperCase() || "9-A";
-            currentExamMode = document.getElementById("selExamMode").value;
+            currentExam = document.getElementById("inpExamName").value.trim() || "1. Yazılı";
+            
+            document.getElementById("courseBadge").innerText = `📐 ${currentCourse} (${currentBranch}) ▾`;
             closeCourseModal();
             loadCourseData();
-            renderUI();
-        }
-
-        function setComponent(comp) {
-            currentComponent = comp;
-            document.querySelectorAll(".comp-btn").forEach(b => b.classList.remove("active"));
-            if (comp === "yazili") document.getElementById("btnCompYazili").classList.add("active");
-            if (comp === "dinleme") document.getElementById("btnCompDinleme").classList.add("active");
-            if (comp === "konusma") document.getElementById("btnCompKonusma").classList.add("active");
-            inputBuffer = "";
             renderUI();
         }
 
@@ -574,26 +521,24 @@
             const key = getStorageKey();
             const saved = localStorage.getItem(key);
             if (saved) {
-                try { 
-                    examConfig = JSON.parse(saved);
-                    currentExamMode = examConfig.mod || "standart";
-                    return; 
-                } catch(e) {}
+                try { examConfig = JSON.parse(saved); return; } catch(e) {}
             }
 
             examConfig = {
                 ders: currentCourse,
                 sube: currentBranch,
                 sinav: currentExam,
-                mod: currentExamMode,
                 questions: [
                     { no: 1, max: 10 }, { no: 2, max: 10 }, { no: 3, max: 15 },
-                    { no: 4, max: 15 }, { no: 5, max: 10 }, { no: 6, max: 10 }
+                    { no: 4, max: 15 }, { no: 5, max: 10 }, { no: 6, max: 10 },
+                    { no: 7, max: 15 }, { no: 8, max: 15 }
                 ],
                 students: [
-                    { no: "101", name: "Ali Yılmaz", scores: [0,0,0,0,0,0], dinleme: 0, konusma: 0 },
-                    { no: "102", name: "Ayşe Kaya", scores: [0,0,0,0,0,0], dinleme: 0, konusma: 0 },
-                    { no: "103", name: "Mehmet Demir", scores: [0,0,0,0,0,0], dinleme: 0, konusma: 0 }
+                    { no: "101", name: "Ali Yılmaz", scores: [0,0,0,0,0,0,0,0] },
+                    { no: "102", name: "Ayşe Kaya", scores: [0,0,0,0,0,0,0,0] },
+                    { no: "103", name: "Mehmet Demir", scores: [0,0,0,0,0,0,0,0] },
+                    { no: "104", name: "Zeynep Çelik", scores: [0,0,0,0,0,0,0,0] },
+                    { no: "105", name: "Burak Şahin", scores: [0,0,0,0,0,0,0,0] }
                 ]
             };
             saveToStorage();
@@ -606,76 +551,42 @@
         function saveToStorage() {
             examConfig.ders = currentCourse;
             examConfig.sube = currentBranch;
-            examConfig.mod = currentExamMode;
+            examConfig.sinav = currentExam;
             localStorage.setItem(getStorageKey(), JSON.stringify(examConfig));
         }
 
         function isStudentGraded(student) {
-            if (currentExamMode === "dil") {
-                return (student.dinleme > 0 || student.konusma > 0 || student.scores.some(sc => sc > 0));
-            }
             return student.scores.some(sc => sc > 0);
         }
 
         function renderUI() {
             if (!examConfig.students || examConfig.students.length === 0) return;
             const student = examConfig.students[currentStudentIdx];
-
-            document.getElementById("courseBadge").innerText = `📐 ${currentCourse} (${currentBranch}) ▾`;
-
-            const compBar = document.getElementById("componentBar");
-            if (currentExamMode === "dil") {
-                compBar.style.display = "flex";
-            } else {
-                compBar.style.display = "none";
-                currentComponent = "yazili";
-            }
-
             document.getElementById("studentNo").innerText = "No: " + student.no;
             document.getElementById("studentName").innerText = student.name;
             document.getElementById("studentIndexLabel").innerText = `Öğrenci: ${currentStudentIdx + 1} / ${examConfig.students.length}`;
 
+            const total = student.scores.reduce((a, b) => a + b, 0);
+            document.getElementById("studentTotalScore").innerText = total;
+
             const qContainer = document.getElementById("questionsContainer");
+            qContainer.innerHTML = "";
+            examConfig.questions.forEach((q, idx) => {
+                const pill = document.createElement("div");
+                pill.className = `q-pill ${idx === currentQuestionIdx ? 'active' : ''}`;
+                pill.onclick = () => selectQuestion(idx);
+                pill.innerHTML = `
+                    <div class="q-title">S${q.no}</div>
+                    <div class="q-val">${student.scores[idx] !== undefined ? student.scores[idx] : 0}</div>
+                    <div class="q-max">/${q.max}p</div>
+                `;
+                qContainer.appendChild(pill);
+            });
 
-            if (currentComponent === "yazili") {
-                qContainer.style.display = "flex";
-                qContainer.innerHTML = "";
-                examConfig.questions.forEach((q, idx) => {
-                    const pill = document.createElement("div");
-                    pill.className = `q-pill ${idx === currentQuestionIdx ? 'active' : ''}`;
-                    pill.onclick = () => selectQuestion(idx);
-                    pill.innerHTML = `
-                        <div class="q-title">S${q.no}</div>
-                        <div class="q-val">${student.scores[idx] !== undefined ? student.scores[idx] : 0}</div>
-                        <div class="q-max">/${q.max}p</div>
-                    `;
-                    qContainer.appendChild(pill);
-                });
-
-                const total = student.scores.reduce((a, b) => a + b, 0);
-                document.getElementById("studentTotalScore").innerText = total;
-                document.getElementById("scoreLabel").innerText = "Yazılı Toplamı";
-
-                const activeQ = examConfig.questions[currentQuestionIdx];
-                document.getElementById("activeQTitle").innerText = `${activeQ.no}. Soru Puanı (Maks: ${activeQ.max}p)`;
-                document.getElementById("activeQValue").innerText = inputBuffer !== "" ? inputBuffer : student.scores[currentQuestionIdx];
-
-            } else if (currentComponent === "dinleme") {
-                qContainer.style.display = "none";
-                document.getElementById("studentTotalScore").innerText = student.dinleme || 0;
-                document.getElementById("scoreLabel").innerText = "Dinleme Notu";
-
-                document.getElementById("activeQTitle").innerText = "Dinleme Sınavı Notu (100 Üzerinden)";
-                document.getElementById("activeQValue").innerText = inputBuffer !== "" ? inputBuffer : (student.dinleme || 0);
-
-            } else if (currentComponent === "konusma") {
-                qContainer.style.display = "none";
-                document.getElementById("studentTotalScore").innerText = student.konusma || 0;
-                document.getElementById("scoreLabel").innerText = "Konuşma Notu";
-
-                document.getElementById("activeQTitle").innerText = "Konuşma / Okuma Notu (100 Üzerinden)";
-                document.getElementById("activeQValue").innerText = inputBuffer !== "" ? inputBuffer : (student.konusma || 0);
-            }
+            const activeQ = examConfig.questions[currentQuestionIdx];
+            document.getElementById("activeQTitle").innerText = `${activeQ.no}. Soru Puanı (Maks: ${activeQ.max}p)`;
+            const currentVal = inputBuffer !== "" ? inputBuffer : student.scores[currentQuestionIdx];
+            document.getElementById("activeQValue").innerText = currentVal;
 
             const totalGraded = examConfig.students.filter(s => isStudentGraded(s)).length;
             const pct = Math.round((totalGraded / examConfig.students.length) * 100);
@@ -690,38 +601,28 @@
         }
 
         function pressNum(num) {
-            const student = examConfig.students[currentStudentIdx];
+            const maxScore = examConfig.questions[currentQuestionIdx].max;
+            inputBuffer += num;
 
-            if (currentComponent === "yazili") {
-                const maxScore = examConfig.questions[currentQuestionIdx].max;
-                inputBuffer += num;
-                let val = parseInt(inputBuffer);
-                if (val > maxScore) { val = maxScore; inputBuffer = String(val); }
-                student.scores[currentQuestionIdx] = val;
-                saveToStorage();
+            let val = parseInt(inputBuffer);
+            if (val > maxScore) {
+                val = maxScore;
+                inputBuffer = String(val);
+            }
 
-                if (inputBuffer.length >= 2 || val === maxScore || (maxScore < 10 && inputBuffer.length >= 1)) {
-                    setTimeout(() => confirmAndNext(), 120);
-                } else {
-                    renderUI();
-                }
+            examConfig.students[currentStudentIdx].scores[currentQuestionIdx] = val;
+            saveToStorage();
+
+            if (inputBuffer.length >= 2 || val === maxScore || (maxScore < 10 && inputBuffer.length >= 1)) {
+                setTimeout(() => { confirmAndNext(); }, 120);
             } else {
-                inputBuffer += num;
-                let val = parseInt(inputBuffer);
-                if (val > 100) { val = 100; inputBuffer = "100"; }
-                if (currentComponent === "dinleme") student.dinleme = val;
-                if (currentComponent === "konusma") student.konusma = val;
-                saveToStorage();
                 renderUI();
             }
         }
 
         function clearScore() {
             inputBuffer = "0";
-            const student = examConfig.students[currentStudentIdx];
-            if (currentComponent === "yazili") student.scores[currentQuestionIdx] = 0;
-            if (currentComponent === "dinleme") student.dinleme = 0;
-            if (currentComponent === "konusma") student.konusma = 0;
+            examConfig.students[currentStudentIdx].scores[currentQuestionIdx] = 0;
             saveToStorage();
             renderUI();
             inputBuffer = "";
@@ -729,22 +630,14 @@
 
         function confirmAndNext() {
             inputBuffer = "";
-            if (currentComponent === "yazili") {
-                if (currentQuestionIdx < examConfig.questions.length - 1) {
-                    currentQuestionIdx++;
-                } else {
-                    if (currentStudentIdx < examConfig.students.length - 1) {
-                        currentStudentIdx++;
-                        currentQuestionIdx = 0;
-                    } else {
-                        alert("🎉 Bu sınıftaki yazılı notları tamamlandı!");
-                    }
-                }
+            if (currentQuestionIdx < examConfig.questions.length - 1) {
+                currentQuestionIdx++;
             } else {
                 if (currentStudentIdx < examConfig.students.length - 1) {
                     currentStudentIdx++;
+                    currentQuestionIdx = 0;
                 } else {
-                    alert(`🎉 Bu sınıftaki ${currentComponent.toUpperCase()} notları tamamlandı!`);
+                    alert("🎉 Tebrikler! Tüm sınıfın not girişi tamamlandı.");
                 }
             }
             renderUI();
@@ -803,14 +696,8 @@
             examConfig.students.forEach((st, idx) => {
                 if (q && !st.name.toLowerCase().includes(q) && !st.no.includes(q)) return;
 
+                const total = st.scores.reduce((a, b) => a + b, 0);
                 const graded = isStudentGraded(st);
-                let badgeText = "⏳ Girilmedi";
-
-                if (currentExamMode === "dil") {
-                    badgeText = `Y:${st.scores.reduce((a,b)=>a+b,0)} D:${st.dinleme||0} K:${st.konusma||0}`;
-                } else {
-                    badgeText = graded ? '✔ ' + st.scores.reduce((a,b)=>a+b,0) + ' Puan' : '⏳ Girilmedi';
-                }
 
                 const item = document.createElement("div");
                 item.className = `student-item ${graded ? 'graded' : ''}`;
@@ -827,19 +714,22 @@
                         <div class="st-no">No: ${st.no}</div>
                         <div class="st-name">${st.name}</div>
                     </div>
-                    <div class="st-badge">${badgeText}</div>
+                    <div class="st-badge">${graded ? '✔ ' + total + ' Puan' : '⏳ Girilmedi'}</div>
                 `;
 
                 container.appendChild(item);
             });
         }
 
+        // 🔴 BULUT AKTARIM MOTORU (RESMÎ NTFY JSON ŞABLONU İLE %100 HATASIZ)
         async function syncDirectToCloud() {
             const btn = document.querySelector(".btn-sync");
             btn.innerText = "Aktarılıyor... ⏳";
             btn.disabled = true;
 
             const cloudTopic = "arslanoglu_sync_" + currentActiveUser;
+
+            // Bulut sunucusunun kabul ettiği resmî mesaj zarfı
             const bulutPaketi = {
                 topic: cloudTopic,
                 message: JSON.stringify(examConfig),
@@ -856,10 +746,11 @@
                 if (response.ok) {
                     alert(`🎉 BULUTA AKTARILDI!\n\n📚 Ders: ${currentCourse}\n🏫 Şube: ${currentBranch}\n📝 Sınav: ${currentExam}\n\nNotlar güvenle buluta iletildi. Bilgisayarınızdan tek tıkla çekebilirsiniz.`);
                 } else {
-                    throw new Error();
+                    const hataCevabi = await response.text();
+                    throw new Error(hataCevabi);
                 }
             } catch(e) {
-                alert("Bağlantı hatası! Lütfen internetinizi kontrol ediniz.");
+                alert("Bulut Hatası: " + (e.message || "Bağlantı kurulamadı"));
             } finally {
                 btn.innerText = "☁️ Bulut";
                 btn.disabled = false;
