@@ -11,6 +11,7 @@
     </script>
     <!-- ========================================================================= -->
 
+    <!-- YAKINLAŞMAYI KİLİTLEYEN META -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>ARSLANOĞLU GROUP - Mobil Not Sistemi</title>
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -26,11 +27,12 @@
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             -webkit-tap-highlight-color: transparent;
             user-select: none;
+            touch-action: manipulation !important; /* ÇİFT DOKUNMA YAKINLAŞTIRMASINI ÖNLER */
         }
 
         html, body {
             height: 100%;
-            height: 100dvh; /* DİNAMİK VİEWPORT: TARAYICI ÇUBUĞUNU HESABA KATAR */
+            height: 100dvh; /* DİNAMİK VİEWPORT */
             background-color: #121212;
             color: #ecf0f1;
             display: flex;
@@ -66,9 +68,9 @@
             background: #1e1e1e;
             border: 1px solid #333;
             color: #f1c40f;
-            padding: 13px;
+            padding: 14px;
             border-radius: 8px;
-            font-size: 14px;
+            font-size: 16px !important; /* İPHONE ZOOM ENGELİ İÇİN 16PX */
             margin-bottom: 12px;
             outline: none;
             user-select: text;
@@ -107,7 +109,7 @@
             text-decoration: underline;
         }
 
-        /* 2. NOT GİRİŞ MASASI (KOMPAKT & TAŞMAYAN MİMARİ) */
+        /* 2. NOT GİRİŞ MASASI */
         .header {
             background: linear-gradient(135deg, #1e1e1e 0%, #0d0d0d 100%);
             border-bottom: 1px solid #2a2a2a;
@@ -157,9 +159,9 @@
             background: #1c1c1e;
             border: 1px solid #333;
             color: #f1c40f;
-            padding: 6px 10px;
+            padding: 8px 12px;
             border-radius: 7px;
-            font-size: 11.5px;
+            font-size: 16px !important; /* İPHONE ZOOM ENGELİ İÇİN 16PX */
             outline: none;
             user-select: text;
         }
@@ -197,12 +199,12 @@
         .active-question-display .title { font-size: 11px; color: #bbb; }
         .active-question-display .val-preview { font-size: 28px; font-weight: 900; color: #d4af37; }
 
-        /* TUŞ TAKIMI: ALT BOŞLUK KESİNLİKLE KORUMALIDIR */
+        /* TUŞ TAKIMI */
         .keypad-container { 
             margin-top: auto; 
             background: #18181a; 
             border-top: 1px solid #282828; 
-            padding: 6px 8px calc(24px + env(safe-area-inset-bottom)) 8px; /* TARAYICI ÇUBUĞUNUN ÜSTÜNE ÇIKARAN KORUMA */
+            padding: 6px 8px calc(24px + env(safe-area-inset-bottom)) 8px;
         }
         .nav-controls { display: flex; gap: 6px; margin-bottom: 5px; }
         .nav-btn { flex: 1; background: #2a2a2e; color: #fff; border: none; padding: 7px; border-radius: 7px; font-size: 11px; font-weight: bold; cursor: pointer; }
@@ -213,7 +215,7 @@
             color: #fff; 
             border: none; 
             border-radius: 8px; 
-            height: 42px; /* KÜÇÜK VE TAŞMAYAN TUŞLAR */
+            height: 42px;
             font-size: 20px; 
             font-weight: 700; 
             display: flex; 
@@ -311,7 +313,7 @@
         <div class="val-preview" id="activeQValue">-</div>
     </div>
 
-    <!-- ALT KORUMALI TUŞ TAKIMI -->
+    <!-- TUŞ TAKIMI -->
     <div class="keypad-container">
         <div class="nav-controls">
             <button class="nav-btn" onclick="prevStudent()">⬅ Önceki</button>
@@ -368,9 +370,21 @@
     </div>
 
     <script>
-        let currentActiveUser = "arslanoglu";
+        // 🔴 İOS & ANDROİD ÇİFT TIKLAMA YAKINLAŞTIRMASINI (ZOOM) KESİN ENGELLEYEN KOD
+        let lastTouchEnd = 0;
+        document.addEventListener('touchend', function (event) {
+            let now = (new Date()).getTime();
+            if (now - lastTouchEnd <= 300) {
+                event.preventDefault();
+            }
+            lastTouchEnd = now;
+        }, { passive: false });
 
-        // DERS, ŞUBE VE SINAV BİLGİLERİ (BİRBİRİNE KARIŞMAZ)
+        document.addEventListener('gesturestart', function (e) {
+            e.preventDefault();
+        });
+
+        let currentActiveUser = "arslanoglu";
         let currentCourse = "Matematik";
         let currentBranch = "9-A";
         let currentExam = "1. Dönem 1. Yazılı";
@@ -475,7 +489,6 @@
             }
         });
 
-        // DERS AYARLARI MODAL İŞLEMLERİ
         function openCourseModal() {
             document.getElementById("inpCourseName").value = currentCourse;
             document.getElementById("inpBranchName").value = currentBranch;
@@ -498,7 +511,6 @@
             renderUI();
         }
 
-        // HER DERS İÇİN AYRI HAFIZA ANAHTARI
         function getStorageKey() {
             return `ars_exam_${currentCourse.toLowerCase()}_${currentBranch.toLowerCase()}`;
         }
@@ -512,7 +524,6 @@
                 try { examConfig = JSON.parse(saved); return; } catch(e) {}
             }
 
-            // Varsayılan Sınav Şablonu
             examConfig = {
                 ders: currentCourse,
                 sube: currentBranch,
@@ -710,7 +721,7 @@
             });
         }
 
-        // DERS ADIYLA ETİKETLENEREK BULUTA GÖNDERME
+        // 🔴 BULUT AKTARIM MOTORU (RESMÎ NTFY JSON ŞABLONU İLE %100 HATASIZ)
         async function syncDirectToCloud() {
             const btn = document.querySelector(".btn-sync");
             btn.innerText = "Aktarılıyor... ⏳";
@@ -718,20 +729,28 @@
 
             const cloudTopic = "arslanoglu_sync_" + currentActiveUser;
 
+            // Bulut sunucusunun kabul ettiği resmî mesaj zarfı
+            const bulutPaketi = {
+                topic: cloudTopic,
+                message: JSON.stringify(examConfig),
+                title: "Not Paketi"
+            };
+
             try {
-                const response = await fetch("https://ntfy.sh/" + cloudTopic, {
+                const response = await fetch("https://ntfy.sh", {
                     method: "POST",
-                    body: JSON.stringify(examConfig),
-                    headers: { "Title": `${currentCourse} - ${currentBranch} Notları`, "Priority": "high" }
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(bulutPaketi)
                 });
 
                 if (response.ok) {
-                    alert(`🎉 BULUTA AKTARILDI!\n\n📚 Ders: ${currentCourse}\n🏫 Şube: ${currentBranch}\n📝 Sınav: ${currentExam}\n\nNotlar güvenle buluta aktarıldı. Bilgisayarınızdan tek tıkla çekebilirsiniz.`);
+                    alert(`🎉 BULUTA AKTARILDI!\n\n📚 Ders: ${currentCourse}\n🏫 Şube: ${currentBranch}\n📝 Sınav: ${currentExam}\n\nNotlar güvenle buluta iletildi. Bilgisayarınızdan tek tıkla çekebilirsiniz.`);
                 } else {
-                    throw new Error();
+                    const hataCevabi = await response.text();
+                    throw new Error(hataCevabi);
                 }
             } catch(e) {
-                alert("Bağlantı hatası! Lütfen internetinizi kontrol ediniz.");
+                alert("Bulut Hatası: " + (e.message || "Bağlantı kurulamadı"));
             } finally {
                 btn.innerText = "☁️ Bulut";
                 btn.disabled = false;
