@@ -11,7 +11,6 @@
     </script>
     <!-- ========================================================================= -->
 
-    <!-- YAKINLAŞMAYI KESİN ENGELLEYEN META -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>ARSLANOĞLU GROUP - Mobil Not Sistemi</title>
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -27,12 +26,12 @@
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             -webkit-tap-highlight-color: transparent;
             user-select: none;
-            touch-action: manipulation !important; /* ÇİFT DOKUNMA ZOOM'UNU KİLİTLER */
+            touch-action: manipulation !important;
         }
 
         html, body {
             height: 100%;
-            height: 100dvh; /* DİNAMİK VİEWPORT */
+            height: 100dvh;
             background-color: #121212;
             color: #ecf0f1;
             display: flex;
@@ -40,7 +39,7 @@
             overflow: hidden;
         }
 
-        /* 1. GİRİŞ EKRANI */
+        /* GİRİŞ EKRANI */
         #loginScreen {
             position: fixed;
             top: 0; left: 0; right: 0; bottom: 0;
@@ -70,7 +69,7 @@
             color: #f1c40f;
             padding: 14px;
             border-radius: 8px;
-            font-size: 16px !important; /* İPHONE ZOOM ENGELİ */
+            font-size: 16px !important;
             margin-bottom: 12px;
             outline: none;
             user-select: text;
@@ -109,7 +108,7 @@
             text-decoration: underline;
         }
 
-        /* 2. NOT GİRİŞ MASASI */
+        /* NOT GİRİŞ MASASI */
         .header {
             background: linear-gradient(135deg, #1e1e1e 0%, #0d0d0d 100%);
             border-bottom: 1px solid #2a2a2a;
@@ -162,7 +161,7 @@
             color: #f1c40f;
             padding: 8px 12px;
             border-radius: 7px;
-            font-size: 16px !important; /* İPHONE ZOOM ENGELİ */
+            font-size: 16px !important;
             outline: none;
             user-select: text;
         }
@@ -200,7 +199,7 @@
         .active-question-display .title { font-size: 11px; color: #bbb; }
         .active-question-display .val-preview { font-size: 28px; font-weight: 900; color: #d4af37; }
 
-        /* TUŞ TAKIMI (KORUMALI ALT BOŞLUK) */
+        /* TUŞ TAKIMI */
         .keypad-container { 
             margin-top: auto; 
             background: #18181a; 
@@ -235,12 +234,9 @@
         
         .student-list-scroll { overflow-y: auto; margin: 8px 0; display: flex; flex-direction: column; gap: 6px; padding-right: 3px; }
         .student-item { background: #252528; border: 1px solid #333; border-radius: 7px; padding: 8px 10px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; }
-        
-        /* NOTU GİRİLMİŞ ÖĞRENCİ (YEŞİL ROZET & ÇERÇEVE) */
         .student-item.graded { background: #143522; border: 1px solid #2ea043; }
         .student-item.graded .st-name { color: #2ea043; font-weight: bold; }
         .student-item.graded .st-badge { background: #2ea043; color: #121212; font-weight: 900; }
-        
         .student-item .st-no { font-size: 10px; color: #aaa; }
         .student-item .st-name { font-size: 13px; color: #fff; }
         .student-item .st-badge { background: #333; color: #bbb; font-size: 10.5px; padding: 2px 7px; border-radius: 10px; font-weight: bold; }
@@ -288,7 +284,7 @@
         <div class="progress-bar" id="progressBar"></div>
     </div>
 
-    <!-- HIZLI ARAMA ÇUBUĞU (OKUL NO VEYA İSİM İLE ANINDA BULUR) -->
+    <!-- HIZLI ARAMA -->
     <div class="search-container">
         <input type="search" id="quickSearchInput" class="search-input" placeholder="🔍 Okul No veya İsim ile Hızlı Bul..." oninput="handleQuickSearch(this.value)">
     </div>
@@ -318,7 +314,7 @@
         <div class="val-preview" id="activeQValue">-</div>
     </div>
 
-    <!-- TUŞ TAKIMI (KORUMALI ALT PAYLI) -->
+    <!-- TUŞ TAKIMI -->
     <div class="keypad-container">
         <div class="nav-controls">
             <button class="nav-btn" onclick="prevStudent()">⬅ Önceki</button>
@@ -340,24 +336,19 @@
         </div>
     </div>
 
-    <!-- DERS & ŞUBE SEÇİM MODAL -->
+    <!-- ŞUBE DEĞİŞTİRME PENCERESİ -->
     <div class="modal" id="courseModal">
         <div class="modal-content">
-            <h3>📐 Şube & Ders Seçimi</h3>
-            <p style="font-size:11px; color:#aaa; margin-bottom:12px; text-align:center;">Hangi sınıfın notlarını okuyorsanız seçiniz:</p>
+            <h3>📐 Şube Seçimi</h3>
+            <p style="font-size:11px; color:#aaa; margin-bottom:12px; text-align:center;">Okumak istediğiniz şubeyi seçiniz:</p>
             
-            <label style="font-size:11px; color:#d4af37; font-weight:bold;">Ders:</label>
-            <input type="text" id="inpCourseName" class="login-input" style="padding:9px; margin-bottom:8px;" value="Matematik">
-            
-            <label style="font-size:11px; color:#d4af37; font-weight:bold;">Şube (Örn: 9-A, 9-B):</label>
-            <input type="text" id="inpBranchName" class="login-input" style="padding:9px; margin-bottom:12px;" value="9-A">
+            <div id="branchButtonsContainer" style="display:flex; flex-direction:column; gap:8px; margin-bottom:12px;"></div>
 
-            <button class="modal-btn" onclick="saveCourseSettings()">Seçimi Uygula</button>
             <button class="modal-btn" style="background:#333; color:#fff;" onclick="closeCourseModal()">Kapat</button>
         </div>
     </div>
 
-    <!-- SINIF LİSTESİ MODAL (YEŞİL GÖSTERGELİ) -->
+    <!-- SINIF LİSTESİ MODAL -->
     <div class="modal" id="studentListModal">
         <div class="modal-content">
             <h3>📋 Şube Öğrenci Listesi</h3>
@@ -372,7 +363,6 @@
     </div>
 
     <script>
-        // Çift dokunma zoom kilidi
         let lastTouchEnd = 0;
         document.addEventListener('touchend', function (event) {
             let now = (new Date()).getTime();
@@ -453,7 +443,7 @@
             document.getElementById("teacherBadge").innerText = teacherName.toUpperCase();
             document.getElementById("loginScreen").style.display = "none";
             loadCourseData();
-            fetchSetupFromDesktop(true); // Açılışta masaüstünden yeni kurulum var mı kontrol et
+            fetchSetupFromDesktop(true); // Açılışta masaüstü kurulumunu kontrol et
             renderUI();
         }
 
@@ -475,53 +465,101 @@
             if (savedSession) loginSuccess(savedSession, savedRawUser || "arslanoglu");
         });
 
-        // 🔴 MASAÜSTÜNDEN GERÇEK SINIFLARI VE SORULARI İNDİRME KÖPRÜSÜ
+        // 🔴 MASAÜSTÜNDEN KURULUMU ÇEKEN KESİN KOD
         async function fetchSetupFromDesktop(silent = false) {
+            const btn = document.querySelector(".btn-download");
+            if (btn) { btn.innerText = "İndiriliyor... ⏳"; btn.disabled = true; }
+
             const topic = "arslanoglu_setup_" + currentActiveUser;
             try {
                 const res = await fetch(`https://ntfy.sh/${topic}/json?poll=1`, { cache: "no-store" });
-                if (!res.ok) return;
+                if (!res.ok) throw new Error("Ağ yanıt vermedi");
                 const txt = await res.text();
                 const lines = txt.trim().split("\n");
-                if (lines.length === 0 || lines[0] === "") return;
+                if (lines.length === 0 || lines[0] === "") throw new Error("Boş veri");
 
-                const lastMsg = JSON.parse(lines[lines.length - 1]);
-                const setupData = JSON.parse(lastMsg.message);
-
-                if (setupData.type === "setup" && setupData.subeler) {
-                    currentCourse = setupData.ders || "Matematik";
-                    currentExam = setupData.sinav || "1. Ortak Yazılı";
-                    
-                    const subeler = Object.keys(setupData.subeler);
-                    currentBranch = subeler[0] || "9-A";
-
-                    examConfig = {
-                        ders: currentCourse,
-                        sube: currentBranch,
-                        sinav: currentExam,
-                        questions: setupData.questions || [{ no: 1, max: 10 }, { no: 2, max: 10 }],
-                        students: (setupData.subeler[currentBranch] || []).map(st => ({
-                            no: st.no,
-                            name: st.ad_soyad || st.name,
-                            scores: Array((setupData.questions || []).length).fill(0)
-                        }))
-                    };
-
-                    saveToStorage();
-                    renderUI();
-
-                    if (!silent) {
-                        alert(`🎉 BİLGİSAYARDAN YENİ SINAV KURULUMU ALINDI!\n\n📚 Ders: ${currentCourse}\n🏫 Şube: ${currentBranch}\n👥 Öğrenci Sayısı: ${examConfig.students.length}\n\nÖğrenci listesi başarıyla güncellendi!`);
-                    }
+                // En son kurulum paketini bul
+                let setupData = null;
+                for (let i = lines.length - 1; i >= 0; i--) {
+                    try {
+                        const parsedMsg = JSON.parse(lines[i]);
+                        const inner = JSON.parse(parsedMsg.message);
+                        if (inner && inner.type === "setup" && inner.subeler) {
+                            setupData = inner;
+                            break;
+                        }
+                    } catch(e) {}
                 }
+
+                if (!setupData) throw new Error("Kurulum paketi bulunamadı");
+
+                currentCourse = setupData.ders || "Matematik";
+                currentExam = setupData.sinav || "1. Ortak Yazılı";
+                
+                const subeListesi = Object.keys(setupData.subeler);
+                if (subeListesi.length === 0) throw new Error("Şube yok");
+                
+                currentBranch = subeListesi[0];
+
+                // Soruları no ve max formatında normalize et
+                const gelenSorular = (setupData.questions || []).map((q, idx) => ({
+                    no: q.no || q.soru_no || (idx + 1),
+                    max: q.max || q.puan || 10
+                }));
+
+                // İlk şubenin öğrencilerini al
+                const gelenOgrenciler = (setupData.subeler[currentBranch] || []).map(st => ({
+                    no: String(st.no || "").trim(),
+                    name: String(st.ad_soyad || st.name || "").trim(),
+                    scores: Array(gelenSorular.length).fill(0)
+                }));
+
+                examConfig = {
+                    ders: currentCourse,
+                    sube: currentBranch,
+                    sinav: currentExam,
+                    allSubeler: setupData.subeler, // Tüm şubeleri telefonda sakla
+                    questions: gelenSorular,
+                    students: gelenOgrenciler
+                };
+
+                saveToStorage();
+                currentStudentIdx = 0;
+                currentQuestionIdx = 0;
+                inputBuffer = "";
+                renderUI();
+
+                alert(`🎉 BİLGİSAYARDAN SINAV ALINDI!\n\n📚 Ders: ${currentCourse}\n🏫 Şube: ${currentBranch}\n👥 Öğrenci Sayısı: ${gelenOgrenciler.length}\n❓ Soru Sayısı: ${gelenSorular.length}\n\nNotları okumaya başlayabilirsiniz!`);
+
             } catch(e) {
-                if (!silent) alert("Masaüstünden henüz gönderilmiş bir sınav kurulumu bulunamadı.");
+                if (!silent) {
+                    alert("⚠️ Bilgisayardan henüz bir sınav gönderilmemiş!\n\nLütfen bilgisayardaki programdan '📲 Sınavı & Sınıfları Telefona Gönder' butonuna bastığınızdan emin olun.");
+                }
+            } finally {
+                if (btn) { btn.innerText = "📥 İndir"; btn.disabled = false; }
             }
         }
 
+        // Şube değiştirme menüsü
         function openCourseModal() {
-            document.getElementById("inpCourseName").value = currentCourse;
-            document.getElementById("inpBranchName").value = currentBranch;
+            const container = document.getElementById("branchButtonsContainer");
+            container.innerHTML = "";
+
+            const subeler = examConfig.allSubeler ? Object.keys(examConfig.allSubeler) : [currentBranch];
+            
+            subeler.forEach(subeAdi => {
+                const btn = document.createElement("button");
+                btn.className = "modal-btn";
+                btn.style.background = subeAdi === currentBranch ? "#238636" : "#26262a";
+                btn.style.color = "#fff";
+                btn.innerText = `🏫 ${subeAdi} Şubesine Geç`;
+                btn.onclick = () => {
+                    changeBranch(subeAdi);
+                    closeCourseModal();
+                };
+                container.appendChild(btn);
+            });
+
             document.getElementById("courseModal").style.display = "flex";
         }
 
@@ -529,11 +567,26 @@
             document.getElementById("courseModal").style.display = "none";
         }
 
-        function saveCourseSettings() {
-            currentCourse = document.getElementById("inpCourseName").value.trim() || "Matematik";
-            currentBranch = document.getElementById("inpBranchName").value.trim().toUpperCase() || "9-A";
-            closeCourseModal();
-            loadCourseData();
+        function changeBranch(newBranch) {
+            currentBranch = newBranch;
+            const key = getStorageKey();
+            const saved = localStorage.getItem(key);
+
+            if (saved) {
+                try { examConfig = JSON.parse(saved); } catch(e) {}
+            } else if (examConfig.allSubeler && examConfig.allSubeler[newBranch]) {
+                examConfig.sube = newBranch;
+                examConfig.students = examConfig.allSubeler[newBranch].map(st => ({
+                    no: String(st.no || "").trim(),
+                    name: String(st.ad_soyad || st.name || "").trim(),
+                    scores: Array(examConfig.questions.length).fill(0)
+                }));
+                saveToStorage();
+            }
+
+            currentStudentIdx = 0;
+            currentQuestionIdx = 0;
+            inputBuffer = "";
             renderUI();
         }
 
@@ -594,7 +647,6 @@
             document.getElementById("studentName").innerText = student.name;
             document.getElementById("studentIndexLabel").innerText = `Öğrenci: ${currentStudentIdx + 1} / ${examConfig.students.length}`;
 
-            // Soru Hapları
             const qContainer = document.getElementById("questionsContainer");
             qContainer.innerHTML = "";
             examConfig.questions.forEach((q, idx) => {
@@ -747,7 +799,7 @@
             });
         }
 
-        // 🔴 BULUTA GÖNDERME KÖPRÜSÜ
+        // 🔴 BULUTA NOTLARI GERİ GÖNDERME KÖPRÜSÜ
         async function syncDirectToCloud() {
             const btn = document.querySelector(".btn-sync");
             btn.innerText = "Aktarılıyor... ⏳";
@@ -768,7 +820,7 @@
                 });
 
                 if (response.ok) {
-                    alert(`🎉 BULUTA AKTARILDI!\n\n📚 Ders: ${currentCourse}\n🏫 Şube: ${currentBranch}\n\nNotlar güvenle buluta iletildi. Bilgisayarınızdan tek tıkla çekebilirsiniz.`);
+                    alert(`🎉 BULUTA AKTARILDI!\n\n📚 Ders: ${currentCourse}\n🏫 Şube: ${currentBranch}\n\nNotlar güvenle buluta iletildi. Bilgisayarınızdan '☁️ Telefondaki Notları Buluttan Çek' butonuna basabilirsiniz.`);
                 } else {
                     throw new Error();
                 }
